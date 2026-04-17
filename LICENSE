@@ -1,0 +1,31 @@
+Sonaris - Audio Quality Analyzer
+Copyright (c) 2025-2026 Arctisoft-Studio / Bernd Julian Hagen
+All rights reserved.
+
+PROPRIETARY SOFTWARE LICENSE
+
+PERMITTED USE:
+  - Free to use for personal and commercial purposes.
+  - Install on an unlimited number of devices you own or control.
+  - Make backup copies of the installer for personal archival purposes.
+  - May distribute the original, unmodified installer.
+
+RESTRICTIONS:
+  - No modification, reverse engineering, decompilation, or disassembly.
+  - No removal or alteration of copyright, trademark, or proprietary notices.
+  - No redistribution, sale, rental, or sublicensing without written permission.
+
+DISCLAIMER:
+  This software is provided "as is" without warranty of any kind,
+  express or implied. The author is not liable for any damages
+  arising from its use.
+
+THIRD-PARTY COMPONENTS:
+  FFmpeg           - GPL       - Audio decoding and spectral analysis
+  Newtonsoft.Json   - MIT       - JSON serialization
+
+GOVERNING LAW:
+  This license is governed by the laws of Austria.
+
+For questions and support:
+  https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/issues
