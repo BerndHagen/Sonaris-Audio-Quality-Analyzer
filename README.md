@@ -301,21 +301,25 @@ If you'd like a preview of Sonaris before downloading, the screenshots below sho
   <tr>
     <th>Sonaris - Analyze Files</th>
     <th>Sonaris - Live Scan Progress</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-start.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-start.png" alt="Sonaris Analyze Files" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png" alt="Sonaris Live Scan Progress" width="450"></a></td>
+  </tr>
+  <tr>
     <th>Sonaris - Scan Results</th>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-start.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-start.png" alt="Analyze Files" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png" alt="Live Scan Progress" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-results.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-results.png" alt="Scan Results" width="300"></a></td>
-  </tr>
-  <tr>
     <th>Sonaris - Multi-Folder Results</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-results.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-results.png" alt="Sonaris Scan Results" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-foldersresult.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-foldersresult.png" alt="Sonaris Multi-Folder Results" width="450"></a></td>
+  </tr>
+  <tr>
     <th>Sonaris - Scan History</th>
     <th>Sonaris - Application Settings</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-foldersresult.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-foldersresult.png" alt="Multi-Folder Results" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-history.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-history.png" alt="Scan History" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png" alt="Application Settings" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-history.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-history.png" alt="Sonaris Scan History" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png" alt="Sonaris Application Settings" width="450"></a></td>
   </tr>
 </table>
