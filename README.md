@@ -10,7 +10,7 @@
   <a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/releases"><img src="https://img.shields.io/github/v/release/BerndHagen/Sonaris-Audio-Quality-Analyzer?include_prereleases&style=flat-square&color=CD853F" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Freeware-green?style=flat-square" alt="License"></a>&nbsp;&nbsp;<a href="https://dotnet.microsoft.com/download/dotnet/10.0/runtime"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square" alt=".NET Version"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square" alt="Platform">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Architecture-x64-lightgrey?style=flat-square" alt="Architecture">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square" alt="Status">&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/issues"><img src="https://img.shields.io/badge/Issues-0_open-orange?style=flat-square" alt="Open Issues"></a>
 </p>
 
-**Sonaris** is an audio quality analyzer that scans and grades your music library. It uses FFmpeg-powered spectrum analysis to measure the true frequency content of each track, compares it against codec and bitrate expectations, and assigns quality grades from S (lossless) through F (severely degraded). The application supports batch folder scanning with configurable sampling, parallel analysis workers, stereo correlation measurement, clipping detection, mastering quality assessment, upsampling and transcoding detection, and automatic platform detection for gaming soundtracks. Results can be exported as CSV, JSON, or formatted text reports.
+**Sonaris** is a professional audio quality analyzer that scans and grades music libraries, production archives, masters, and distribution catalogs. It uses FFmpeg-powered spectral analysis to measure true frequency content per track, compares measured results against codec/bitrate expectations, and assigns quality grades from S (lossless/full-bandwidth) through F (severely degraded). The application supports batch scanning with configurable sampling, parallel analysis workers, stereo correlation, clipping detection, mastering quality assessment, upsampling/transcoding detection, and optional platform-aware grading profiles. Results can be exported as TXT, CSV, or JSON, and copied to clipboard.
 
 ### **Key Features**
 
@@ -21,7 +21,7 @@
 - **Clipping Detection:** Detects digital clipping by counting samples at 0 dBFS and measuring inter-sample true peak levels.
 - **Mastering Quality:** Evaluates mastering characteristics using integrated LUFS loudness (EBU R128), loudness range, dynamic range, and true peak headroom.
 - **Upsampling Detection:** Identifies lossy audio falsely stored in lossless containers by comparing measured spectral content against claimed codec and bitrate.
-- **Platform Detection:** Automatically detects gaming platforms and audio sources from folder naming to apply platform-relative grading thresholds.
+- **Platform-Aware Profiles (Optional):** Applies platform-relative grading thresholds only when relevant; this is an optional classification aid and not the core analysis mode.
 - **Batch Scanning:** Analyze entire music libraries with configurable samples per folder, parallel workers, and per-file timeout settings.
 - **Live Scan Progress:** Real-time grade distribution visualization and file-by-file progress during active scans.
 - **Export Reports:** Export results as CSV, JSON, formatted text reports, or copy to clipboard.
@@ -35,6 +35,8 @@ Sonaris supports a wide range of audio formats for analysis:
 
 - **Lossy Formats:** `MP3`, `AAC`, `M4A`, `OGG`, `OPUS`, `WMA`, `MPC`
 - **Lossless Formats:** `FLAC`, `WAV`, `AIFF`, `APE`, `TTA`, `WV`
+
+> **Format handling note:** Folder scans, drag-and-drop, and file picker all support the formats above.
 
 > **Note:** Sonaris requires FFmpeg and ffprobe for audio analysis. On first launch, the application automatically downloads and installs these tools to a shared tools directory. No manual setup is required.
 
@@ -145,7 +147,7 @@ Sonaris assigns quality grades based on the measured spectral content of each au
 
 ### **Platform-Relative Grades**
 
-When platform detection is enabled, Sonaris adjusts grading thresholds based on the maximum achievable frequency for the detected platform. A SNES soundtrack at 16 kHz may receive an S grade (platform maximum) rather than a B grade (absolute threshold). This provides fair quality assessment for retro gaming soundtracks and other platform-limited audio.
+When platform detection is enabled, Sonaris adjusts grading thresholds based on the maximum achievable frequency for a detected source profile. This optional mode is useful for context-specific catalogs (for example, legacy console archives), while absolute grading remains available for general music, mastering, and library QA workflows.
 
 ## **Mastering Quality Assessment**
 
@@ -192,7 +194,7 @@ Short audio clips under 15 seconds and files with names matching common sound ef
 
 ## **Platform Detection**
 
-Sonaris automatically detects gaming platforms and audio sources from folder and file naming patterns. When a platform is detected, grading thresholds are adjusted to reflect the maximum achievable audio quality for that platform.
+Sonaris can detect platform/source profiles from folder and file naming patterns. When a profile is detected, grading thresholds can be adjusted to reflect maximum achievable quality for that source. This mode is optional and complements, not replaces, standard absolute grading.
 
 **Supported Platforms:**
 
@@ -242,8 +244,8 @@ Clear the scan history via the "Clear History" button in the Application Setting
 | **Parallel Workers** | Number of concurrent analysis threads | 1, 2, 4, 8 |
 | **Per-File Timeout** | Maximum seconds allowed per file analysis | 30, 60, 120, 300 |
 | **Default Platform** | Auto-applied platform override for every new scan | None (auto-detect), or specific platform |
-| **Max Scan Depth** | Limit recursive subdirectory depth during folder scans | Unlimited, 1, 2, 3, 5, 10 |
-| **Min File Duration** | Skip files shorter than this duration | No minimum, 5s, 10s, 15s, 30s |
+| **Max Scan Depth** | Limit recursive subdirectory depth during folder scans | Unlimited, 1, 2, 3, 5 |
+| **Min File Duration** | Skip files shorter than this duration | No minimum, 5s, 10s, 30s |
 | **Multi-Window Analysis** | Analyze both start and midpoint of each track | On / Off |
 | **Platform Detection** | Detect gaming platforms from folder names | On / Off |
 
@@ -278,7 +280,6 @@ Synced settings include all analysis parameters, advanced analysis toggles, and 
 | `Ctrl+4` | Navigate to Settings |
 | `F5` | Start new scan |
 | `Ctrl+O` | Browse for files |
-| `Ctrl+Shift+C` | Copy results to clipboard |
 | `Esc` | Close detail panel |
 
 ## **Copyright**
