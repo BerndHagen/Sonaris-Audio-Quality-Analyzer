@@ -207,7 +207,7 @@ Sonaris can detect platform/source profiles from folder and file naming patterns
 | **Arcade Systems** | CPS-1, CPS-2, Neo-Geo, Naomi, MAME |
 | **Analog Sources** | Vinyl (LP), Cassette, FM Radio, AM Radio |
 
-Platform detection is enabled by default and can be toggled in the Settings page.
+Platform detection is optional and disabled by default. It can be enabled in the Settings page when you want source-aware grading context.
 
 ## **Export Options**
 
