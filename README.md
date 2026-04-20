@@ -103,7 +103,7 @@ Sonaris supports a wide range of audio formats for analysis:
 
 ### **Step 1: Select Files or Folders**
 
-When you open Sonaris, the Scan page is displayed with a drop zone in the center. You have three options to start an analysis:
+When you open Sonaris, the Analyze Files page is displayed with a drop zone in the center. You have three options to start an analysis:
 
 - **Drag & Drop:** Drag a folder or individual audio files directly onto the drop zone
 - **Browse Folder:** Click the "Browse Folder" button to select an entire directory for recursive scanning
@@ -227,9 +227,9 @@ Copies a formatted text summary of the current results to the system clipboard f
 
 ## **Scan History**
 
-All completed scans are stored in the Scan History page. Each entry shows the scan date, target path, number of folders and files analyzed, and a grade distribution breakdown (S/A/B/C/D/F counts). You can review past scans at any time to track quality changes across your library.
+All completed scans are stored in the Scan History page. Each entry shows the scan date, folder name, number of files analyzed, scan duration, and a grade summary label (Excellent, Very Good, Good, Mediocre, Poor, Very Poor). Use the **View** button to load past results into the Scan Results page, or **Rescan** to re-analyze the same folder. Multiple history entries can be viewed simultaneously by using the View button on different entries.
 
-Clear the scan history via the "Clear History" button in the Settings page header.
+Clear the scan history via the "Clear History" button in the Application Settings page header.
 
 ## **Settings**
 
@@ -241,6 +241,9 @@ Clear the scan history via the "Clear History" button in the Settings page heade
 | **Analysis Duration** | Duration in seconds to analyze per file | 10, 20, 30, 60 |
 | **Parallel Workers** | Number of concurrent analysis threads | 1, 2, 4, 8 |
 | **Per-File Timeout** | Maximum seconds allowed per file analysis | 30, 60, 120, 300 |
+| **Default Platform** | Auto-applied platform override for every new scan | None (auto-detect), or specific platform |
+| **Max Scan Depth** | Limit recursive subdirectory depth during folder scans | Unlimited, 1, 2, 3, 5, 10 |
+| **Min File Duration** | Skip files shorter than this duration | No minimum, 5s, 10s, 15s, 30s |
 | **Multi-Window Analysis** | Analyze both start and midpoint of each track | On / Off |
 | **Platform Detection** | Detect gaming platforms from folder names | On / Off |
 
@@ -269,7 +272,7 @@ Synced settings include all analysis parameters, advanced analysis toggles, and 
 
 | Shortcut | Description |
 |----------|-------------|
-| `Ctrl+1` | Navigate to Scan page |
+| `Ctrl+1` | Navigate to Analyze Files page |
 | `Ctrl+2` | Navigate to Results page |
 | `Ctrl+3` | Navigate to Scan History |
 | `Ctrl+4` | Navigate to Settings |
@@ -296,13 +299,23 @@ If you'd like a preview of Sonaris before downloading, the screenshots below sho
 
 <table>
   <tr>
-    <th>Sonaris - Scan Page</th>
+    <th>Sonaris - Analyze Files</th>
+    <th>Sonaris - Live Scan Progress</th>
     <th>Sonaris - Scan Results</th>
-    <th>Sonaris - Settings</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png" alt="Scan Page" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-start.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-start.png" alt="Analyze Files" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-scan.png" alt="Live Scan Progress" width="300"></a></td>
     <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-results.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-results.png" alt="Scan Results" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png" alt="Settings" width="300"></a></td>
+  </tr>
+  <tr>
+    <th>Sonaris - Multi-Folder Results</th>
+    <th>Sonaris - Scan History</th>
+    <th>Sonaris - Application Settings</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-foldersresult.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-foldersresult.png" alt="Multi-Folder Results" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-history.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-history.png" alt="Scan History" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png"><img src="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/raw/main/images/screenshot-settings.png" alt="Application Settings" width="300"></a></td>
   </tr>
 </table>
