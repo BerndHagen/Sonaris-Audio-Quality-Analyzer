@@ -21,7 +21,7 @@
 - **Clipping Detection:** Detects digital clipping by counting samples at 0 dBFS and measuring inter-sample true peak levels.
 - **Mastering Quality:** Evaluates mastering characteristics using integrated LUFS loudness (EBU R128), loudness range, dynamic range, and true peak headroom.
 - **Upsampling Detection:** Identifies lossy audio falsely stored in lossless containers by comparing measured spectral content against claimed codec and bitrate.
-- **Platform-Aware Profiles (Optional):** Applies platform-relative grading thresholds only when relevant; this is an optional classification aid and not the core analysis mode.
+- **Source-Profile Context (Optional):** Applies source-aware grading context only when relevant; this is an optional classification aid and not the core analysis mode.
 - **Batch Scanning:** Analyze entire music libraries with configurable samples per folder, parallel workers, and per-file timeout settings.
 - **Live Scan Progress:** Real-time grade distribution visualization and file-by-file progress during active scans.
 - **Export Reports:** Export results as CSV, JSON, formatted text reports, or copy to clipboard.
@@ -60,7 +60,7 @@ Sonaris supports a wide range of audio formats for analysis:
    - [Clipping Detection](#clipping-detection)
    - [Upsampling Detection](#upsampling-detection)
    - [Track Classification](#track-classification)
-7. [Platform Detection](#platform-detection)
+7. [Source Profile Detection (Optional)](#source-profile-detection-optional)
 8. [Export Options](#export-options)
    - [CSV Export](#csv-export)
    - [JSON Export](#json-export)
@@ -192,22 +192,19 @@ Sonaris can identify files where lossy audio has been re-encoded into a lossless
 
 Short audio clips under 15 seconds and files with names matching common sound effect patterns (jingle, SFX, fanfare, etc.) are automatically classified as non-music tracks. These are excluded from folder-level grade calculations to prevent short effects from skewing the overall quality assessment. Non-music tracks can optionally be included in exports via the Settings page.
 
-## **Platform Detection**
+## **Source Profile Detection (Optional)**
 
-Sonaris can detect platform/source profiles from folder and file naming patterns. When a profile is detected, grading thresholds can be adjusted to reflect maximum achievable quality for that source. This mode is optional and complements, not replaces, standard absolute grading.
+Sonaris can detect source profiles from folder and file naming patterns. When a profile is detected, grading context can be adjusted to reflect the practical quality ceiling for that source. This mode is optional and complements, not replaces, standard absolute grading.
 
-**Supported Platforms:**
+**Supported Source Profiles (examples):**
 
-| Category | Platforms |
+| Category | Examples |
 |----------|-----------|
-| **Retro Consoles** | SNES, NES, Genesis/Megadrive, Nintendo 64, Game Boy, Game Boy Color, Game Boy Advance |
-| **Modern Consoles** | PlayStation (PS1-PS5), Xbox (Original, 360, One), GameCube, Wii, Switch, Nintendo DS, 3DS |
-| **Handhelds** | PSP, PS Vita, Nintendo DS, 3DS, Game Boy Advance |
-| **Retro Computers** | Commodore 64, MSX, PC-88, PC-98, X68000, FM-Towns, Atari ST, Amiga |
-| **Arcade Systems** | CPS-1, CPS-2, Neo-Geo, Naomi, MAME |
-| **Analog Sources** | Vinyl (LP), Cassette, FM Radio, AM Radio |
+| **Professional / Studio** | Studio 44.1/48/96/192 kHz, CD, DVD Audio, Blu-ray Audio, Broadcast, Streaming, Film/Cinema |
+| **Analog / Broadcast** | Vinyl (LP), Cassette, FM Radio, AM Radio |
+| **Legacy / Archival (Optional)** | Retro and game-related source profiles for specialized archive validation |
 
-Platform detection is optional and disabled by default. It can be enabled in the Settings page when you want source-aware grading context.
+Source profile detection is optional and disabled by default. Enable it only when you need source-aware grading context for specific catalogs.
 
 ## **Export Options**
 
@@ -243,11 +240,11 @@ Clear the scan history via the "Clear History" button in the Application Setting
 | **Analysis Duration** | Duration in seconds to analyze per file | 10, 20, 30, 60 |
 | **Parallel Workers** | Number of concurrent analysis threads | 1, 2, 4, 8 |
 | **Per-File Timeout** | Maximum seconds allowed per file analysis | 30, 60, 120, 300 |
-| **Default Platform** | Auto-applied platform override for every new scan | None (auto-detect), or specific platform |
+| **Default Source Profile** | Auto-applied source profile override for every new scan | None (auto-detect), or specific profile |
 | **Max Scan Depth** | Limit recursive subdirectory depth during folder scans | Unlimited, 1, 2, 3, 5 |
 | **Min File Duration** | Skip files shorter than this duration | No minimum, 5s, 10s, 30s |
 | **Multi-Window Analysis** | Analyze both start and midpoint of each track | On / Off |
-| **Platform Detection** | Detect gaming platforms from folder names | On / Off |
+| **Source Profile Detection** | Detect source profiles from folder names | On / Off |
 
 ### **Advanced Analysis**
 
