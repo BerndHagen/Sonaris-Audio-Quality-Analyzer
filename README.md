@@ -7,7 +7,7 @@
   <b>Spectrum analysis, stereo correlation, clipping detection, and detailed reporting.</b>
 </p>
 <p align="center">
-  <a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/releases"><img src="https://img.shields.io/github/v/release/BerndHagen/Sonaris-Audio-Quality-Analyzer?include_prereleases&style=flat-square&color=CD853F" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Freeware-green?style=flat-square" alt="License"></a>&nbsp;&nbsp;<a href="https://dotnet.microsoft.com/download/dotnet/10.0/runtime"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square" alt=".NET Version"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square" alt="Platform">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Architecture-x64-lightgrey?style=flat-square" alt="Architecture">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square" alt="Status">&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/issues"><img src="https://img.shields.io/badge/Issues-0_open-orange?style=flat-square" alt="Open Issues"></a>
+  <a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/releases"><img src="https://img.shields.io/github/v/release/BerndHagen/Sonaris-Audio-Quality-Analyzer?include_prereleases&style=flat-square&color=CD853F" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Freeware-green?style=flat-square" alt="License"></a>&nbsp;&nbsp;<a href="https://dotnet.microsoft.com/download/dotnet/10.0/runtime"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square" alt=".NET Version"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square" alt="Platform">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Architecture-x64-lightgrey?style=flat-square" alt="Architecture">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square" alt="Status">&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/issues"><img src="https://img.shields.io/github/issues/BerndHagen/Sonaris-Audio-Quality-Analyzer?style=flat-square&color=orange" alt="Open Issues"></a>
 </p>
 
 **Sonaris** is a professional audio quality analyzer that scans and grades music libraries, production archives, masters, and distribution catalogs. It uses FFmpeg-powered spectral analysis to measure true frequency content per track, compares measured results against codec/bitrate expectations, and assigns quality grades from S (lossless/full-bandwidth) through F (severely degraded). The application supports batch scanning with configurable sampling, parallel analysis workers, stereo correlation, clipping detection, mastering quality assessment, upsampling/transcoding detection, and optional platform-aware grading profiles. Results can be exported as TXT, CSV, or JSON, and copied to clipboard.
@@ -278,8 +278,8 @@ Synced settings include all analysis parameters, advanced analysis toggles, and 
 | `Ctrl+2` | Navigate to Results page |
 | `Ctrl+3` | Navigate to Scan History |
 | `Ctrl+4` | Navigate to Settings |
-| `F5` | Start new scan |
-| `Ctrl+O` | Browse for files |
+| `F5` | Navigate to Analyze Files page |
+| `Ctrl+O` | Navigate to Analyze Files page |
 | `Esc` | Close detail panel |
 
 ## **Copyright**
