@@ -45,36 +45,38 @@ Sonaris supports a wide range of audio formats for analysis:
 1. [System Requirements](#system-requirements)
    - [Minimum Requirements](#minimum-requirements)
    - [Recommended Requirements](#recommended-requirements)
-2. [Installation](#installation)
-3. [Getting Started Guide](#getting-started-guide)
+2. [Third-Party Components](#third-party-components)
+3. [Professional Workflows](#professional-workflows)
+4. [Installation](#installation)
+5. [Getting Started Guide](#getting-started-guide)
    - [Step 1: Select Files or Folders](#step-1-select-files-or-folders)
    - [Step 2: Review Scan Results](#step-2-review-scan-results)
    - [Step 3: Export or Browse History](#step-3-export-or-browse-history)
-4. [Quality Grading System](#quality-grading-system)
+6. [Quality Grading System](#quality-grading-system)
    - [Absolute Grades](#absolute-grades)
-   - [Platform-Relative Grades](#platform-relative-grades)
-5. [Mastering Quality Assessment](#mastering-quality-assessment)
-6. [Analysis Features](#analysis-features)
+  - [Source-Profile Relative Grades](#source-profile-relative-grades)
+7. [Mastering Quality Assessment](#mastering-quality-assessment)
+8. [Analysis Features](#analysis-features)
    - [Spectrum Analysis](#spectrum-analysis)
    - [Stereo Correlation](#stereo-correlation)
    - [Clipping Detection](#clipping-detection)
    - [Upsampling Detection](#upsampling-detection)
    - [Track Classification](#track-classification)
-7. [Source Profile Detection (Optional)](#source-profile-detection-optional)
-8. [Export Options](#export-options)
+9. [Source Profile Detection (Optional)](#source-profile-detection-optional)
+10. [Export Options](#export-options)
    - [CSV Export](#csv-export)
    - [JSON Export](#json-export)
    - [Text Report](#text-report)
    - [Copy to Clipboard](#copy-to-clipboard)
-9. [Scan History](#scan-history)
-10. [Settings](#settings)
+11. [Scan History](#scan-history)
+12. [Settings](#settings)
     - [Analysis Settings](#analysis-settings)
     - [Advanced Analysis](#advanced-analysis)
     - [Export Settings](#export-settings)
-11. [Cloud Settings Sync](#cloud-settings-sync)
-12. [Keyboard Shortcuts](#keyboard-shortcuts)
-13. [Copyright](#copyright)
-14. [Screenshots](#screenshots)
+13. [Cloud Settings Sync](#cloud-settings-sync)
+14. [Keyboard Shortcuts](#keyboard-shortcuts)
+15. [Copyright](#copyright)
+16. [Screenshots](#screenshots)
 
 ## **System Requirements**
 
@@ -93,6 +95,28 @@ Sonaris supports a wide range of audio formats for analysis:
 - **Software:** .NET 10.0 Runtime ([Download](https://dotnet.microsoft.com/download/dotnet/10.0/runtime)) - **Not required as application is self-contained**
 
 **Note:** Sonaris is designed exclusively for Windows. Linux and macOS are not supported. The .NET 10.0 Runtime is bundled directly in the installer, allowing Sonaris to start immediately without requiring separate installation. FFmpeg and ffprobe are downloaded automatically on first launch.
+
+## **Third-Party Components**
+
+Sonaris is built with a minimal and transparent dependency footprint.
+
+- **FFmpeg / ffprobe:** Core audio decoding, metadata extraction, loudness and signal analysis primitives.
+- **Newtonsoft.Json (13.0.4):** JSON serialization for settings and data persistence.
+- **WPF (.NET 10):** Native Windows desktop UI framework for rendering and interaction.
+
+All grading and analysis logic (cutoff detection, grading rules, upsampling checks, source-profile context, track classification, and report generation) is implemented in Sonaris code.
+
+## **Professional Workflows**
+
+Sonaris is designed for practical quality-control scenarios beyond consumer playlist cleanup.
+
+- **Catalog Ingest QA:** Validate incoming libraries for lossy transcodes hidden in lossless containers.
+- **Master Delivery Validation:** Verify spectral bandwidth, clipping risk, and dynamic behavior before release.
+- **Archive Audits:** Profile large historical collections with consistent, repeatable grading criteria.
+- **Distribution Checks:** Compare codec/bitrate claims against measured spectral and loudness characteristics.
+- **Forensic Screening:** Quickly identify suspect files for deeper review in DAWs and restoration suites.
+
+Sonaris is a QA and verification tool. It complements DAWs/editors (such as WaveShaper and MixForge) rather than replacing production/mixing/mastering workflows.
 
 ## **Installation**
 
@@ -124,9 +148,7 @@ After starting a scan, Sonaris automatically switches to the Results page where 
 Once the scan is complete, use the header buttons to export or save your results:
 
 - **Copy Results:** Copies a formatted summary to the clipboard
-- **Export CSV:** Saves per-folder metrics as a CSV spreadsheet
-- **Export Report:** Generates a detailed plain-text analysis report
-- **Export JSON:** Saves the full per-track analysis data as JSON
+- **Export:** One export dialog supports `TXT`, `CSV`, and `JSON` output formats
 
 All past scans are stored in the Scan History page and can be reviewed at any time.
 
@@ -145,7 +167,7 @@ Sonaris assigns quality grades based on the measured spectral content of each au
 | **D** | >= 12 kHz | Audible degradation with noticeable high-frequency loss |
 | **F** | < 12 kHz | Severe quality loss, speech-grade or corrupted audio |
 
-### **Platform-Relative Grades**
+### **Source-Profile Relative Grades**
 
 When platform detection is enabled, Sonaris adjusts grading thresholds based on the maximum achievable frequency for a detected source profile. This optional mode is useful for context-specific catalogs (for example, legacy console archives), while absolute grading remains available for general music, mastering, and library QA workflows.
 
@@ -200,9 +222,11 @@ Sonaris can detect source profiles from folder and file naming patterns. When a 
 
 | Category | Examples |
 |----------|-----------|
-| **Professional / Studio** | Studio 44.1/48/96/192 kHz, CD, DVD Audio, Blu-ray Audio, Broadcast, Streaming, Film/Cinema |
+| **Professional / Studio** | CD, DVD Audio, Blu-ray Audio, Studio 44.1/48/96/192 kHz, Broadcast, Streaming, Film/Cinema, Podcast/Voice |
 | **Analog / Broadcast** | Vinyl (LP), Cassette, FM Radio, AM Radio |
-| **Legacy / Archival (Optional)** | Retro and game-related source profiles for specialized archive validation |
+| **Legacy / Archival (Optional)** | NES/Famicom, SNES/SFC, Genesis/Mega Drive, N64, PS1/PS2/PSX, Saturn, Dreamcast, GameCube, Wii/Wii U, Switch, Xbox families |
+| **Legacy Computers / Arcade (Optional)** | Commodore 64/SID, MSX, PC-88, PC-98, X68000, FM Towns, Atari ST, CPS families, Neo Geo, Naomi, MAME |
+| **Handheld (Optional)** | Game Boy families, GBA, Nintendo DS/3DS, PSP, PS Vita |
 
 Source profile detection is optional and disabled by default. Enable it only when you need source-aware grading context for specific catalogs.
 
