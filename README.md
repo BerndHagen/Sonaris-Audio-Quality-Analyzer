@@ -4,13 +4,13 @@
 <h1 align="center">Sonaris - Audio Quality Analyzer</h1>
 <p align="center">
   <b>Analyze and grade audio quality across entire music libraries.</b><br>
-  <b>Spectrum analysis, stereo correlation, clipping detection, and detailed reporting.</b>
+  <b>Spectrum analysis, silence detection, clipping timestamps, bit depth authenticity, and detailed reporting.</b>
 </p>
 <p align="center">
   <a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/releases"><img src="https://img.shields.io/github/v/release/BerndHagen/Sonaris-Audio-Quality-Analyzer?include_prereleases&style=flat-square&color=CD853F" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Freeware-green?style=flat-square" alt="License"></a>&nbsp;&nbsp;<a href="https://dotnet.microsoft.com/download/dotnet/10.0/runtime"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square" alt=".NET Version"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square" alt="Platform">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Architecture-x64-lightgrey?style=flat-square" alt="Architecture">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square" alt="Status">&nbsp;&nbsp;<a href="https://github.com/BerndHagen/Sonaris-Audio-Quality-Analyzer/issues"><img src="https://img.shields.io/github/issues/BerndHagen/Sonaris-Audio-Quality-Analyzer?style=flat-square&color=orange" alt="Open Issues"></a>
 </p>
 
-**Sonaris** is a professional audio quality analyzer that scans and grades music libraries, production archives, masters, and distribution catalogs. It uses FFmpeg-powered spectral analysis to measure true frequency content per track, compares measured results against codec/bitrate expectations, and assigns quality grades from S (lossless/full-bandwidth) through F (severely degraded). The application supports batch scanning with configurable sampling, parallel analysis workers, stereo correlation, clipping detection, mastering quality assessment, upsampling/transcoding detection, and optional platform-aware grading profiles. Results can be exported as TXT, CSV, or JSON, and copied to clipboard.
+**Sonaris** is a professional audio quality analyzer that scans and grades music libraries, production archives, masters, and distribution catalogs. It uses FFmpeg-powered spectral analysis to measure true frequency content per track, compares measured results against codec/bitrate expectations, and assigns quality grades from S (lossless/full-bandwidth) through F (severely degraded). The application supports batch scanning with configurable sampling, parallel analysis workers, stereo correlation, clipping detection with timestamps, silence detection, bit depth authenticity checking, per-file MD5/SHA-256 checksums, multichannel surround analysis, mastering quality assessment, upsampling/transcoding detection, and optional platform-aware grading profiles. Results can be exported as TXT, CSV, or JSON, and copied to clipboard.
 
 ### **Key Features**
 
@@ -18,7 +18,12 @@
 - **Spectrum Analysis:** FFT-based frequency analysis with cascaded highpass filter probing to determine the true content cutoff of each track.
 - **Multi-Window Analysis:** Analyzes both the beginning and midpoint of each track for more accurate cutoff detection across varying intros and outros.
 - **Stereo Correlation:** Measures left/right channel correlation to identify mono content, true stereo, and phase issues.
-- **Clipping Detection:** Detects digital clipping by counting samples at 0 dBFS and measuring inter-sample true peak levels.
+- **Clipping Detection:** Detects digital clipping by counting samples at 0 dBFS and reports the exact timestamps of clipping events within each file.
+- **Silence Detection:** Detects leading, trailing, and mid-track silence in each file and reports durations and segment counts at both track and folder level.
+- **Bit Depth Authenticity:** Identifies 24-bit lossless files containing 16-bit content by measuring the effective bit resolution of audio samples and flagging padded conversions.
+- **File Integrity Checksums:** Computes MD5 and SHA-256 checksums for every analyzed file, running concurrently with the audio analysis pipeline.
+- **Multichannel Analysis:** Measures per-channel loudness and peak levels for surround and multichannel files, surfacing channel imbalances in the folder detail header.
+- **DSD Support:** Recognizes and correctly handles DSD audio files, including bit depth labeling and channel layout inference.
 - **Mastering Quality:** Evaluates mastering characteristics using integrated LUFS loudness (EBU R128), loudness range, dynamic range, and true peak headroom.
 - **Upsampling Detection:** Identifies lossy audio falsely stored in lossless containers by comparing measured spectral content against claimed codec and bitrate.
 - **Source-Profile Context (Optional):** Applies source-aware grading context only when relevant; this is an optional classification aid and not the core analysis mode.
@@ -35,6 +40,7 @@ Sonaris supports a wide range of audio formats for analysis:
 
 - **Lossy Formats:** `MP3`, `AAC`, `M4A`, `OGG`, `OPUS`, `WMA`, `MPC`
 - **Lossless Formats:** `FLAC`, `WAV`, `AIFF`, `APE`, `TTA`, `WV`
+- **DSD Formats:** `DSF`, `DFF`
 
 > **Format handling note:** Folder scans, drag-and-drop, and file picker all support the formats above.
 
@@ -60,6 +66,10 @@ Sonaris supports a wide range of audio formats for analysis:
    - [Spectrum Analysis](#spectrum-analysis)
    - [Stereo Correlation](#stereo-correlation)
    - [Clipping Detection](#clipping-detection)
+   - [Silence Detection](#silence-detection)
+   - [Bit Depth Authenticity](#bit-depth-authenticity)
+   - [File Integrity Checksums](#file-integrity-checksums)
+   - [Multichannel Analysis](#multichannel-analysis)
    - [Upsampling Detection](#upsampling-detection)
    - [Track Classification](#track-classification)
 9. [Source Profile Detection (Optional)](#source-profile-detection-optional)
@@ -204,7 +214,29 @@ Median stereo correlation is reported at the folder level to identify libraries 
 
 ### **Clipping Detection**
 
-Sonaris detects digital clipping by counting samples that reach the maximum digital level (0 dBFS) and measuring inter-sample true peak levels. Files with true peak >= 0 dBTP or flat-factor values indicating consecutive identical samples at the digital ceiling are flagged as clipped.
+Sonaris detects digital clipping by counting samples that reach the maximum digital level (0 dBFS) and measuring inter-sample true peak levels. Files with true peak >= 0 dBTP or flat-factor values indicating consecutive identical samples at the digital ceiling are flagged as clipped. When clipping is confirmed, Sonaris also identifies the exact timestamp of each clipping event within the file. The folder-level detail header shows the total clip count alongside the first few timestamps drawn from affected tracks.
+
+### **Silence Detection**
+
+Sonaris detects silence regions within each analyzed file and classifies them by position.
+
+- **Leading silence**: Silence at the start of a track, reported in seconds.
+- **Trailing silence**: Silence at the end of a track, reported in seconds.
+- **Mid-track silence**: Gaps within the body of a track. The number of segments and the longest gap duration are both reported.
+
+Tracks with detected silence are assigned a dedicated Silence status in the results table. The folder detail header shows how many tracks in a release have leading, trailing, or mid-track silence.
+
+### **Bit Depth Authenticity**
+
+For 24-bit lossless files (FLAC, ALAC, PCM), Sonaris measures the effective bit resolution of the audio samples and compares it to the declared container bit depth. If the effective depth is significantly lower than the declared depth, the file is flagged as Padded, indicating that 16-bit content has been stored in a 24-bit container. The detected effective resolution is shown alongside the nominal depth in the track details.
+
+### **File Integrity Checksums**
+
+Sonaris computes MD5 and SHA-256 checksums for every analyzed file. Checksum computation runs concurrently with the audio analysis pipeline so it adds no additional latency to the scan.
+
+### **Multichannel Analysis**
+
+For surround and multichannel files, Sonaris measures loudness and peak levels for each channel independently. This surfaces channel imbalances and outliers that would be hidden in a stereo downmix. The folder detail header shows the channel count and layout for releases containing multichannel content. Multichannel analysis is skipped for mono and stereo files.
 
 ### **Upsampling Detection**
 
@@ -234,7 +266,7 @@ Source profile detection is optional and disabled by default. Enable it only whe
 
 ### **CSV Export**
 
-Exports one row per folder with columns for folder name, grade, file count, codec, sample rate, bitrate, cutoff frequency, LUFS, true peak, dynamic range, stereo correlation, clip count, platform, and upsampling flags. Suitable for spreadsheet analysis and data processing.
+Exports one row per folder with columns for folder name, grade, file count, codec, sample rate, bitrate, cutoff frequency, LUFS, true peak, dynamic range, stereo correlation, clip count, silence data, platform, and upsampling flags. Suitable for spreadsheet analysis and data processing.
 
 ### **JSON Export**
 
@@ -275,7 +307,11 @@ Clear the scan history via the "Clear History" button in the Application Setting
 | Setting | Description | Default |
 |---------|-------------|---------|
 | **Stereo Analysis** | Measure left/right channel correlation | Enabled |
-| **Clipping Detection** | Detect digital clipping and flat-factor | Enabled |
+| **Clipping Detection** | Detect digital clipping, flat-factor, and clipping timestamps | Enabled |
+| **Silence Detection** | Detect leading, trailing, and mid-track silence segments | Enabled |
+| **Bit Depth Authenticity** | Check for 16-bit content padded to 24-bit lossless containers | Enabled |
+| **Multichannel Analysis** | Measure per-channel loudness and peak for surround files | Enabled |
+| **File Checksums** | Compute MD5 and SHA-256 hashes per analyzed file | Enabled |
 | **Mastering Quality** | Assess mastering via LUFS, DR, and true peak | Enabled |
 
 ### **Export Settings**
