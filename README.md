@@ -16,9 +16,9 @@
 
 - **Audio Quality Grading:** Assigns S through F grades based on measured spectral cutoff frequency, with clear thresholds for each tier.
 - **Spectrum Analysis:** FFT-based frequency analysis with cascaded highpass filter probing to determine the true content cutoff of each track.
-- **Multi-Window Analysis:** Analyzes both the beginning and midpoint of each track for more accurate cutoff detection across varying intros and outros.
+- **Multi-Window Analysis:** Analyzes the track start and, when a longer track appears bandwidth-limited, re-checks the midpoint and keeps the stronger cutoff reading.
 - **Stereo Correlation:** Measures left/right channel correlation to identify mono content, true stereo, and phase issues.
-- **Clipping Detection:** Detects digital clipping by counting samples at 0 dBFS and reports the exact timestamps of clipping events within each file.
+- **Clipping Detection:** Detects digital clipping by counting samples at 0 dBFS and reports second-level timestamp windows that contain clipping.
 - **Silence Detection:** Detects leading, trailing, and mid-track silence in each file and reports durations and segment counts at both track and folder level.
 - **Bit Depth Authenticity:** Identifies 24-bit lossless files containing 16-bit content by measuring the effective bit resolution of audio samples and flagging padded conversions.
 - **File Integrity Checksums:** Computes MD5 and SHA-256 checksums for every analyzed file, running concurrently with the audio analysis pipeline.
@@ -31,18 +31,21 @@
 - **Live Scan Progress:** Real-time grade distribution visualization and file-by-file progress during active scans.
 - **Export Reports:** Export results as CSV, JSON, formatted text reports, or copy to clipboard.
 - **Scan History:** Browse and review previous scan results with grade breakdowns and timestamps.
-- **Track Classification:** Automatically identifies and excludes short sound effects and jingles from folder-level grading.
+- **Track Classification:** Automatically identifies short sound effects and jingles, marks them in results, and excludes them from music-only loudness and dynamics summaries.
 - **Cloud Settings Sync:** Sync analysis settings and scan history to the cloud via [Arctisoft Hub](https://github.com/BerndHagen/Arctisoft-Studio-Hub), keeping your configuration consistent across devices.
 
 ### **Supported Audio Formats**
 
 Sonaris supports a wide range of audio formats for analysis:
 
-- **Lossy Formats:** `MP3`, `AAC`, `M4A`, `OGG`, `OPUS`, `WMA`, `MPC`
-- **Lossless Formats:** `FLAC`, `WAV`, `AIFF`, `APE`, `TTA`, `WV`
-- **DSD Formats:** `DSF`, `DFF`
+- **Common Lossy Formats:** `MP3`, `MP2`, `AAC`, `M4A`, `OGG`, `OGA`, `OPUS`, `WMA`, `MPC`
+- **Lossless / PCM Formats:** `FLAC`, `WAV`, `AIFF`, `AIF`, `APE`, `TTA`, `WV`, `CAF`, `AU`, `SND`
+- **DSD / High-Resolution Containers:** `DSF`, `DFF`, `THD`, `MLP`, `MKA`
+- **Surround / Broadcast Codecs:** `AC3`, `EAC3`, `DTS`, `DTSHD`
+- **Voice and Speech Formats:** `AMR`, `SPX`, `GSM`
+- **Game / Console Audio:** `BRSTM`, `BCSTM`, `AT3`, `ADX`, `HCA`, `VGM`, `SPC`, `NSF`, `PSF`, `MINIPSF`, `XA`, `VOC`
 
-> **Format handling note:** Folder scans, drag-and-drop, and file picker all support the formats above.
+> **Format handling note:** Folder scans, drag-and-drop, and file picker all support the extensions above. Actual decoding and analysis still depend on FFmpeg/ffprobe recognizing the file's real codec.
 
 > **Note:** Sonaris requires FFmpeg and ffprobe for audio analysis. On first launch, the application automatically downloads and installs these tools to a shared tools directory. No manual setup is required.
 
@@ -199,7 +202,7 @@ Mastering quality is assessed independently from the frequency grade. A track ca
 
 ### **Spectrum Analysis**
 
-Sonaris uses FFT-based frequency analysis with cascaded highpass filter probing to measure the true spectral content cutoff of each track. The analysis process filters the audio through progressively higher frequency bands to determine the point at which meaningful content ends. With multi-window analysis enabled, both the beginning and midpoint of each track are analyzed, and the results are averaged for improved accuracy.
+Sonaris uses FFT-based frequency analysis with cascaded highpass filter probing to measure the true spectral content cutoff of each track. The analysis process filters the audio through progressively higher frequency bands to determine the point at which meaningful content ends. With multi-window analysis enabled, the track start is analyzed first; for longer tracks whose first reading looks bandwidth-limited, Sonaris also checks the midpoint and keeps the higher cutoff result.
 
 ### **Stereo Correlation**
 
@@ -214,7 +217,7 @@ Median stereo correlation is reported at the folder level to identify libraries 
 
 ### **Clipping Detection**
 
-Sonaris detects digital clipping by counting samples that reach the maximum digital level (0 dBFS) and measuring inter-sample true peak levels. Files with true peak >= 0 dBTP or flat-factor values indicating consecutive identical samples at the digital ceiling are flagged as clipped. When clipping is confirmed, Sonaris also identifies the exact timestamp of each clipping event within the file. The folder-level detail header shows the total clip count alongside the first few timestamps drawn from affected tracks.
+Sonaris detects digital clipping by counting samples that reach the maximum digital level (0 dBFS) and measuring inter-sample true peak levels. Files with true peak >= 0 dBTP or flat-factor values indicating consecutive identical samples at the digital ceiling are flagged as clipped. When clipping is confirmed, Sonaris reports the start time of one-second windows that contain clipping. The folder-level detail header shows the total clip count alongside the first few timestamps drawn from affected tracks.
 
 ### **Silence Detection**
 
@@ -232,7 +235,7 @@ For 24-bit lossless files (FLAC, ALAC, PCM), Sonaris measures the effective bit 
 
 ### **File Integrity Checksums**
 
-Sonaris computes MD5 and SHA-256 checksums for every analyzed file. Checksum computation runs concurrently with the audio analysis pipeline so it adds no additional latency to the scan.
+Sonaris computes MD5 and SHA-256 checksums for every analyzed file. Checksum computation runs concurrently with the audio analysis pipeline where possible, so it usually overlaps with audio analysis instead of being a separate manual step.
 
 ### **Multichannel Analysis**
 
@@ -244,11 +247,11 @@ Sonaris can identify files where lossy audio has been re-encoded into a lossless
 
 ### **Track Classification**
 
-Short audio clips under 15 seconds and files with names matching common sound effect patterns (jingle, SFX, fanfare, etc.) are automatically classified as non-music tracks. These are excluded from folder-level grade calculations to prevent short effects from skewing the overall quality assessment. Non-music tracks can optionally be included in exports via the Settings page.
+Short audio clips under 15 seconds and files with names matching common sound effect patterns (jingle, SFX, fanfare, etc.) are automatically classified as non-music tracks. They are marked in results and exports, counted separately, and excluded from music-only loudness, dynamic range and noise-floor summaries. Folder spectral grades are still based on the analyzed sample set.
 
 ## **Source Profile Detection (Optional)**
 
-Sonaris can detect source profiles from folder and file naming patterns. When a profile is detected, grading context can be adjusted to reflect the practical quality ceiling for that source. This mode is optional and complements, not replaces, standard absolute grading.
+Sonaris can detect source profiles from folder path and folder-name patterns. When a profile is detected, grading context can be adjusted to reflect the practical quality ceiling for that source. This mode is optional and complements, not replaces, standard absolute grading.
 
 **Supported Source Profiles (examples):**
 
@@ -260,7 +263,7 @@ Sonaris can detect source profiles from folder and file naming patterns. When a 
 | **Legacy Computers / Arcade (Optional)** | Commodore 64/SID, MSX, PC-88, PC-98, X68000, FM Towns, Atari ST, CPS families, Neo Geo, Naomi, MAME |
 | **Handheld (Optional)** | Game Boy families, GBA, Nintendo DS/3DS, PSP, PS Vita |
 
-Source profile detection is optional and disabled by default. Enable it only when you need source-aware grading context for specific catalogs.
+Source profile detection is optional and disabled by default. Enable it only when you need source-aware grading context for specific catalogs. The full profile list is also available for default/manual assignment in Settings and result context menus; if no profile is detected or assigned, absolute grading is used.
 
 ## **Export Options**
 
@@ -296,11 +299,11 @@ Clear the scan history via the "Clear History" button in the Application Setting
 | **Analysis Duration** | Duration in seconds to analyze per file | 10, 20, 30, 60 |
 | **Parallel Workers** | Number of concurrent analysis threads | 1, 2, 4, 8 |
 | **Per-File Timeout** | Maximum seconds allowed per file analysis | 30, 60, 120, 300 |
-| **Default Source Profile** | Auto-applied source profile override for every new scan | None (auto-detect), or specific profile |
+| **Default Source Profile** | Applied to results that do not already have an auto-detected profile | None, or a specific profile |
 | **Max Scan Depth** | Limit recursive subdirectory depth during folder scans | Unlimited, 1, 2, 3, 5 |
 | **Min File Duration** | Skip files shorter than this duration | No minimum, 5s, 10s, 30s |
-| **Multi-Window Analysis** | Analyze both start and midpoint of each track | On / Off |
-| **Source Profile Detection** | Detect source profiles from folder names | On / Off |
+| **Multi-Window Analysis** | Re-check midpoint for longer tracks when the initial cutoff appears limited | On / Off |
+| **Source Profile Detection** | Detect source profiles from folder path/name patterns | On / Off |
 
 ### **Advanced Analysis**
 
@@ -308,10 +311,10 @@ Clear the scan history via the "Clear History" button in the Application Setting
 |---------|-------------|---------|
 | **Stereo Analysis** | Measure left/right channel correlation | Enabled |
 | **Clipping Detection** | Detect digital clipping, flat-factor, and clipping timestamps | Enabled |
-| **Silence Detection** | Detect leading, trailing, and mid-track silence segments | Enabled |
-| **Bit Depth Authenticity** | Check for 16-bit content padded to 24-bit lossless containers | Enabled |
-| **Multichannel Analysis** | Measure per-channel loudness and peak for surround files | Enabled |
-| **File Checksums** | Compute MD5 and SHA-256 hashes per analyzed file | Enabled |
+| **Silence Detection** | Detect leading, trailing, and mid-track silence segments | Automatic when applicable |
+| **Bit Depth Authenticity** | Check for 16-bit content padded to 24-bit lossless containers | Automatic for supported 24-bit lossless files |
+| **Multichannel Analysis** | Measure per-channel loudness and peak for surround files | Automatic for multichannel files |
+| **File Checksums** | Compute MD5 and SHA-256 hashes per analyzed file | Automatic |
 | **Mastering Quality** | Assess mastering via LUFS, DR, and true peak | Enabled |
 
 ### **Export Settings**
@@ -319,13 +322,13 @@ Clear the scan history via the "Clear History" button in the Application Setting
 | Setting | Description |
 |---------|-------------|
 | **Default Export Folder** | Directory where exported files are saved |
-| **Include Non-Music** | Include sound effects and jingles in exported reports |
+| **Include Non-Music** | Non-music clips are marked in reports; current exports include analyzed results and identify non-music counts/types |
 
 ## **Cloud Settings Sync**
 
 Sonaris supports cloud synchronization of settings through [Arctisoft Hub](https://github.com/BerndHagen/Arctisoft-Studio-Hub). Sign in once through the Hub and your analysis configuration is automatically synced across all devices.
 
-Synced settings include all analysis parameters, advanced analysis toggles, and export preferences. Scan history is also stored in the cloud for cross-device access.
+Synced settings include portable analysis parameters, advanced analysis toggles, export preferences, tool/update options and source-profile choices. Machine-specific values such as parallel worker count and default export folder stay local. Scan history summaries and report data are also stored in the cloud for cross-device access when signed in.
 
 ## **Keyboard Shortcuts**
 
@@ -338,6 +341,7 @@ Synced settings include all analysis parameters, advanced analysis toggles, and 
 | `F5` | Navigate to Analyze Files page |
 | `Ctrl+O` | Navigate to Analyze Files page |
 | `Esc` | Close detail panel |
+| Arrow keys / `Home` / `End` / `Enter` | Navigate results, expand folders, and open selected result details |
 
 ## **Copyright**
 
